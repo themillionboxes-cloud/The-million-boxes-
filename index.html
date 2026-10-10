@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Million Boxes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0d0d0d;
+            color: #e0e0e0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        header {
+            text-align: center;
+            padding: 25px 15px;
+            background: #000;
+            border-bottom: 2px solid #222;
+        }
+        h1 {
+            font-size: 2.4rem;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #9945FF, #14F195);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: #888;
+            margin-top: 8px;
+            font-size: 1rem;
+        }
+        #pixel-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1px;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #333;
+        }
+        .pixel {
+            width: 12px;
+            height: 12px;
+            background: #1a1a1a;
+            cursor: pointer;
+        }
+        .pixel.sold {
+            background: #14F195;
+        }
+        .pixel.ad {
+            background: #9945FF;
+        }
+        .pixel:hover {
+            outline: 1px solid #fff;
+            z-index: 2;
+        }
+        .info-box {
+            max-width: 600px;
+            margin: 30px auto;
+            text-align: center;
+            padding: 0 15px;
+        }
+        .wallet {
+            background: #1a1a1a;
+            border: 1px solid #9945FF;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: #14F195;
+            word-break: break-all;
+        }
+        button {
+            background: linear-gradient(90deg, #9945FF, #14F195);
+            color: #000;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 8px;
+        }
+        button:hover { opacity: 0.9; }
+        a { color: #1DA1F2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        footer {
+            text-align: center;
+            padding: 40px 15px;
+            color: #555;
+            font-size: 0.85rem;
+            border-top: 1px solid #222;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>THE MILLION BOXES</h1>
+        <p class="subtitle">1,000,000 advertising boxes • $0.50 each • Pay with Solana</p>
+    </header>
+
+    <div id="pixel-grid"></div>
+
+    <div class="info-box">
+        <p>Buy permanent advertising space on this page.<br>Click any box to reserve it.</p>
+        
+        <div class="wallet" id="sol-wallet">2xDTu31frjq9x1cvEJ7qHsetLt6NHDaB43LQ9iR2gZSg</div>
+        
+        <button onclick="copyAddress()">Copy Wallet Address</button>
+        <button onclick="fillSample()">Show Sample Ads</button>
+        
+        <p style="margin-top: 20px;">
+            After payment, message <a href="https://x.com/prayo80246" target="_blank">@prayo80246</a> on X with your transaction hash.
+        </p>
+    </div>
+
+    <footer>
+        The Million Boxes • Inspired by the Million Dollar Homepage<br>
+        Payments accepted in SOL / USDC on Solana
+    </footer>
+
+    <script>
+        const grid = document.getElementById('pixel-grid');
+        const BOXES_TO_SHOW = 8000;
+
+        function buildGrid() {
+            grid.innerHTML = '';
+            for (let i = 0; i < BOXES_TO_SHOW; i++) {
+                const box = document.createElement('div');
+                box.className = 'pixel';
+                box.title = 'Box #' + (i + 1) + ' — $0.50';
+                box.onclick = function() {
+                    alert('Box #' + (i + 1) + '\n\nSend payment to the wallet below, then DM @prayo80246 with your transaction.');
+                };
+                grid.appendChild(box);
+            }
+        }
+
+        function fillSample() {
+            const boxes = document.querySelectorAll('.pixel');
+            for (let i = 0; i < 600; i++) {
+                const random = Math.floor(Math.random() * boxes.length);
+                boxes[random].classList.add(Math.random() > 0.4 ? 'ad' : 'sold');
+            }
+        }
+
+        function copyAddress() {
+            const addr = document.getElementById('sol-wallet').textContent;
+            navigator.clipboard.writeText(addr).then(() => {
+                alert('Wallet address copied!');
+            }).catch(() => {
+                alert('Copy failed. Please copy manually.');
+            });
+        }
+
+        buildGrid();
+    </script>
+</body>
+</html>
